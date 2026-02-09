@@ -93,10 +93,11 @@ def on_change_input():
     st.session_state.selected_product_name = ""
 
 product_input = st.text_input(
-    "",
+    "제품명",
     value=st.session_state.product_input,
     key="product_input",
-    on_change=on_change_input
+    on_change=on_change_input,
+    label_visibility="collapsed"
 )
 
 input_value = st.session_state.product_input
@@ -142,9 +143,10 @@ elif not input_value.strip():
 # --- 제조일자 입력 ---
 st.write("제조일자")
 date_input = st.date_input(
-    "",
+    "제조일자",
     key="date_input",
-    format="YYYY.MM.DD"
+    format="YYYY.MM.DD",
+    label_visibility="collapsed"
 )
 
 col1, col2 = st.columns([1, 1])
@@ -317,7 +319,7 @@ if st.session_state.confirm_success:
                 self.x = int(x)
                 self.y = int(y)
 
-        # 매칭 가능한 텍스트 변형들(ocr이 "2026.2.9"처럼 줄 수도 있어 완전 일치가 어려움)
+        # 매칭 가능한 텍스트 변형들
         y = expiry_dt.year
         m = expiry_dt.month
         d = expiry_dt.day
@@ -345,7 +347,6 @@ if st.session_state.confirm_success:
                     break
 
             if hit:
-                # r[0] = [[x1,y1],[x2,y2],[x3,y3],[x4,y4]]
                 pts = r[0]
                 xs = [p[0] for p in pts]
                 ys = [p[1] for p in pts]
@@ -372,7 +373,6 @@ if st.session_state.confirm_success:
                 # 빨간색 네모 박스 그리기
                 img_copy = raw_image.copy()
                 draw = ImageDraw.Draw(img_copy)
-                # bbox는 4개 꼭짓점, [(x1, y1), (x2, y2), ...]
                 box = [(v.x, v.y) for v in bbox]
                 draw.line(box + [box[0]], fill=(255,0,0), width=5)
                 # 적당히 리사이즈 (넓이 380px 맞춤)
